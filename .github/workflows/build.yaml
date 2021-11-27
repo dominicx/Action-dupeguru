@@ -36,6 +36,7 @@ jobs:
    
     - name: Display Python version
       run: |
+        shell: cmd
         python -c "import sys; print(sys.version)"
         python -m pip install --upgrade setuptools
         python -m pip install --upgrade pip
@@ -55,7 +56,7 @@ jobs:
     - name : Build APP
       id: compile
       run: |
-        cmd
+        shell: cmd
         cd dupeguru
         copy /Y ..\build.py .\
         python -m venv .\env
@@ -72,12 +73,11 @@ jobs:
       id: package
       if: steps.compile.outputs.status == 'success'  && !cancelled()
       run: |
-        cmd
+        shell: cmd
         cd dupeguru
         .\env\Scripts\activate
         python package.py
         echo "::set-output name=status::success"
-        cd build
         tree
         
     - name: Generate release tag
