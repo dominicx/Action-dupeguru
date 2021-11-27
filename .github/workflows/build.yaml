@@ -55,7 +55,9 @@ jobs:
     - name : Build APP
       id: compile
       run: |
+        copy build.py
         cd dupeguru
+        copy /Y ..\build.py .\
         python -m venv .\env
         .\env\Scripts\activate
         pip install -r requirements.txt -r requirements-extra.txt
