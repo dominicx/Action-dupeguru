@@ -13,7 +13,7 @@ on:
     types: started
     
 env:
-  REPO_URL: arsenetar/dupeguru
+  REPO_URL: https://github.com/arsenetar/dupeguru
   REPO_BRANCH: master
   UPLOAD_RELEASE: true
   UPLOAD_BIN_DIR: true
@@ -51,7 +51,7 @@ jobs:
         sdk-version: 19041
     
     - name: Clone source code
-      run: gh repo clone $REPO_URL dupeguru
+      run:  gh repo clone $REPO_URL -b $REPO_BRANCH dupeguru
     
     - name : Build APP
       id: compile
