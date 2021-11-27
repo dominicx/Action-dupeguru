@@ -51,7 +51,7 @@ jobs:
         sdk-version: 19041
     
     - name: Clone source code
-      run:  gh repo clone $REPO_URL -b $REPO_BRANCH dupeguru
+      run:  git clone $REPO_URL -b $REPO_BRANCH dupeguru
     
     - name : Build APP
       id: compile
