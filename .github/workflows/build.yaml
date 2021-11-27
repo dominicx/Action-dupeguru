@@ -55,7 +55,6 @@ jobs:
     - name : Build APP
       id: compile
       run: |
-        copy build.py
         cd dupeguru
         copy /Y ..\build.py .\
         python -m venv .\env
