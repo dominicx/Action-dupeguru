@@ -1,0 +1,112 @@
+name: dupeguru
+on:
+  release:
+    types: published
+  push:
+    branches:
+      - master
+    paths:
+      - '.config'
+#  schedule:
+#    - cron: 0 8 * * 5
+  watch:
+    types: started
+    
+env:
+  REPO_URL: arsenetar/dupeguru
+  REPO_BRANCH: master
+  UPLOAD_RELEASE: true
+  UPLOAD_BIN_DIR: true
+  TZ: Asia/Shanghai
+  
+jobs:
+  build:
+    runs-on: windows-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+          python-version: '3.8'
+          cache: 'pip'
+   
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+      
+    - name: Display pip test
+      run: |
+        python -m pip install --upgrade setuptools
+        pip -V
+        
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+    
+    - name: Add Windows 10 SDK
+      uses: GuillaumeFalourd/setup-windows10-sdk-action@v1
+      with:
+        sdk-version: 19041
+    
+    - name: Clone source code
+      run: gh repo clone $REPO_URL dupeguru
+    
+    - name : Build APP
+      id: compile
+      run: |
+        cd dupeguru
+        python -m venv .\env
+        .\env\Scripts\activate
+        pip install -r requirements.txt -r requirements-extra.txt
+        python build.py
+        python run.py
+        echo "::set-output name=status::success"
+    
+    - name: Install makensis
+      uses: joncloud/makensis-action@v3.6
+
+    - name : Generate Windows Installer Packages
+      id: package
+      if: steps.compile.outputs.status == 'success'  && !cancelled()
+      run: |
+        cd dupeguru
+        .\env\Scripts\activate
+        python package.py
+        echo "::set-output name=status::success"
+        cd build
+        tree
+        
+    - name: Generate release tag
+      id: tag
+      if: steps.package.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
+      run: |
+        echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
+        touch release.txt
+        echo "::set-output name=status::success"
+    
+    - name: Upload installer to release
+      uses: softprops/action-gh-release@v1
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body_path: release.txt
+        files: build/*
+
+    - name: Delete workflow runs
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 3
+
+    - name: Remove old Releases
+      uses: dev-drprasad/delete-older-releases@v0.1.0
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      with:
+        keep_latest: 7
+        delete_tags: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
