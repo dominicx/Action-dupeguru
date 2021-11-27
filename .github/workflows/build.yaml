@@ -55,6 +55,7 @@ jobs:
     - name : Build APP
       id: compile
       run: |
+        cmd
         cd dupeguru
         copy /Y ..\build.py .\
         python -m venv .\env
@@ -71,6 +72,7 @@ jobs:
       id: package
       if: steps.compile.outputs.status == 'success'  && !cancelled()
       run: |
+        cmd
         cd dupeguru
         .\env\Scripts\activate
         python package.py
