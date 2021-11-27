@@ -49,7 +49,7 @@ jobs:
         sdk-version: 19041
     
     - name: Clone source code
-      run:  git clone $REPO_URL
+      run:  git clone https://github.com/arsenetar/dupeguru.git
     
     - name : Build APP
       id: compile
