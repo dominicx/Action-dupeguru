@@ -149,6 +149,7 @@ def build_normal():
     #fix_qt_resource_file(Path("qt", "dg_rc.py"))
     print("Building help ")
     #build_one_help("en")
+    print("Building completed.")
 
 
 def main():
@@ -175,7 +176,9 @@ def main():
         build_pe_modules()
     else:
         build_normal()
+        print("===========")
 
 
 if __name__ == "__main__":
     main()
+    print("===========222")
