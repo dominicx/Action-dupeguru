@@ -53,12 +53,16 @@ jobs:
     - name: Clone source code
       run:  git clone https://github.com/arsenetar/dupeguru.git
     
-    - name : Build APP
-      id: compile
+    - name: fix build  code
       shell: cmd
       run: |
         cd dupeguru
         copy /Y ..\build.py .\
+        
+    - name : Build APP
+      id: compile
+      run: |
+        cd dupeguru
         python -m venv .\env
         .\env\Scripts\activate
         pip install -r requirements.txt -r requirements-extra.txt
@@ -72,7 +76,6 @@ jobs:
     - name : Generate Windows Installer Packages
       id: package
       if: steps.compile.outputs.status == 'success'  && !cancelled()
-      shell: cmd
       run: |
         cd dupeguru
         .\env\Scripts\activate
