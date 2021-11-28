@@ -70,7 +70,6 @@ def build_one_help(language):
     help_basepath = current_path.joinpath("help", language)
     help_destpath = current_path.joinpath("build", "help", language)
     confrepl = {"language": language}
-    print("Startig sphinxgen")
     sphinxgen.gen(
         help_basepath,
         help_destpath,
@@ -83,7 +82,7 @@ def build_one_help(language):
 
 
 def build_help():
-    languages = ["en"]
+    languages = ["en", "de", "fr", "hy", "ru", "uk"]
     # Running with Pools as for some reason sphinx seems to cross contaminate the output otherwise
     with Pool(len(languages)) as p:
         p.map(build_one_help, languages)
@@ -145,11 +144,11 @@ def build_normal():
     print("Building localizations")
     build_localizations()
     print("Building Qt stuff")
-    #print_and_do("pyrcc5 {0} -o {1}".format(Path("qt", "dg.qrc"), Path("qt", "dg_rc.py")))
-    #fix_qt_resource_file(Path("qt", "dg_rc.py"))
-    print("Building help ")
-    #build_one_help("en")
-    print("Building completed.")
+    print_and_do("pyrcc5 {0} > {1}".format(Path("qt", "dg.qrc"), Path("qt", "dg_rc.py")))
+    fix_qt_resource_file(Path("qt", "dg_rc.py"))
+    print("Building help")
+    build_help()
+    print("Building is completed")
 
 
 def main():
@@ -176,9 +175,7 @@ def main():
         build_pe_modules()
     else:
         build_normal()
-        print("===========")
 
 
 if __name__ == "__main__":
     main()
-    print("===========222")
