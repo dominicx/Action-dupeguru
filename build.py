@@ -82,7 +82,7 @@ def build_one_help(language):
 
 
 def build_help():
-    languages = ["en", "de", "fr", "hy", "ru", "uk"]
+    languages = ["en"]
     # Running with Pools as for some reason sphinx seems to cross contaminate the output otherwise
     with Pool(len(languages)) as p:
         p.map(build_one_help, languages)
@@ -146,9 +146,7 @@ def build_normal():
     print("Building Qt stuff")
     print_and_do("pyrcc5 {0} > {1}".format(Path("qt", "dg.qrc"), Path("qt", "dg_rc.py")))
     fix_qt_resource_file(Path("qt", "dg_rc.py"))
-    print("Building help")
     build_help()
-    print("Building is completed")
 
 
 def main():
