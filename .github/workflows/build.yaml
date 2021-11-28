@@ -65,6 +65,7 @@ jobs:
         python -m venv .\env
         .\env\Scripts\activate
         python -m pip install --upgrade pip
+        python -m pip install -U wheel
         pip install -r requirements.txt -r requirements-extra.txt
         python build.py
         python run.py
