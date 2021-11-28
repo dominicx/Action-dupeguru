@@ -148,7 +148,7 @@ def build_normal():
     #print_and_do("pyrcc5 {0} -o {1}".format(Path("qt", "dg.qrc"), Path("qt", "dg_rc.py")))
     #fix_qt_resource_file(Path("qt", "dg_rc.py"))
     print("Building help ")
-    build_one_help("en")
+    #build_one_help("en")
 
 
 def main():
