@@ -35,8 +35,8 @@ jobs:
           cache: 'pip'
    
     - name: Display Python version
+      shell: cmd
       run: |
-        shell: cmd
         python -c "import sys; print(sys.version)"
         python -m pip install --upgrade setuptools
         python -m pip install --upgrade pip
@@ -55,8 +55,8 @@ jobs:
     
     - name : Build APP
       id: compile
+      shell: cmd
       run: |
-        shell: cmd
         cd dupeguru
         copy /Y ..\build.py .\
         python -m venv .\env
@@ -72,8 +72,8 @@ jobs:
     - name : Generate Windows Installer Packages
       id: package
       if: steps.compile.outputs.status == 'success'  && !cancelled()
+      shell: cmd
       run: |
-        shell: cmd
         cd dupeguru
         .\env\Scripts\activate
         python package.py
@@ -85,7 +85,7 @@ jobs:
       if: steps.package.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
-        touch release.txt
+        echo ''> release.txt
         echo "::set-output name=status::success"
     
     - name: Upload installer to release
