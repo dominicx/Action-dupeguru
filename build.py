@@ -70,6 +70,7 @@ def build_one_help(language):
     help_basepath = current_path.joinpath("help", language)
     help_destpath = current_path.joinpath("build", "help", language)
     confrepl = {"language": language}
+    print("Startig sphinxgen")
     sphinxgen.gen(
         help_basepath,
         help_destpath,
@@ -147,7 +148,7 @@ def build_normal():
     #print_and_do("pyrcc5 {0} -o {1}".format(Path("qt", "dg.qrc"), Path("qt", "dg_rc.py")))
     #fix_qt_resource_file(Path("qt", "dg_rc.py"))
     print("Building help ")
-    build_help()
+    build_one_help("en")
 
 
 def main():
