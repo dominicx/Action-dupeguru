@@ -82,7 +82,7 @@ def build_one_help(language):
 
 
 def build_help():
-    languages = ["en", "de", "fr", "hy", "ru", "uk"]
+    languages = ["en"]
     # Running with Pools as for some reason sphinx seems to cross contaminate the output otherwise
     with Pool(len(languages)) as p:
         p.map(build_one_help, languages)
