@@ -69,7 +69,6 @@ jobs:
         python -m pip install -U wheel
         pip install -r requirements.txt -r requirements-extra.txt
         python build.py
-        python run.py
         echo "::set-output name=status::success"
 
     - name : Generate Windows Installer Packages
