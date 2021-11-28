@@ -51,13 +51,6 @@ jobs:
     
     - name: Clone source code
       run:  git clone https://github.com/arsenetar/dupeguru.git
-    
-    - name: fix build  code
-      shell: cmd
-      run: |
-        cd dupeguru
-        #copy /Y ..\build.py .\
-        #copy /Y ..\dg_rc.py .\qt\
         
     - name : Build APP
       id: compile
