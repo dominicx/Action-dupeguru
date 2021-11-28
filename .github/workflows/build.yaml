@@ -79,7 +79,6 @@ jobs:
         .\env\Scripts\activate
         python package.py
         echo "::set-output name=status::success"
-        tree
         
     - name: Generate release tag
       id: tag
@@ -97,7 +96,7 @@ jobs:
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
-        files: dupeguru/setup.exe
+        files: dupeguru/dist/dupeGuru*.exe
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
